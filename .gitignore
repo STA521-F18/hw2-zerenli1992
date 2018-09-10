@@ -4,6 +4,7 @@
 
 # Session Data files
 .RData
+HW2.Rproj
 
 # Example code in package build process
 *-Ex.R
