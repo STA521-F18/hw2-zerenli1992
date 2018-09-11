@@ -1,7 +1,7 @@
 ---
 title: "HW2 STA521 Fall18"
 author: '[Your Name Here, netid and github username here]'
-date: "Due September 19, 2017"
+date: "Due September 19, 2018"
 output:
   pdf_document: default
   html_document:
@@ -81,14 +81,16 @@ on your findings regarding trying to predict `ModernC` from the other variables.
 
 ```
 
-8.  Fit the regression using the transformed variables.  Provide residual plots and added variables plots and comment.  If you feel that you need additional transformations, repeat any steps until you feel satisfied.
+8.  Fit the regression using the transformed variables.  Provide residual plots and added variables plots and comment.  If you feel that you need additional transformations of either the response or predictors, repeat any steps until you feel satisfied.
+
+9. Start by finding the best transformation of the response and then find transformations of the predictors.  Do you end up with a different model than in 8?
 
 
 ```{r}
 
 ```
 
-9.  Are there any outliers or influential points in the data?  Explain.  If so, refit the model after removing any outliers and comment on residual plots.
+10.  Are there any outliers or influential points in the data?  Explain.  If so, refit the model after removing any outliers and comment on residual plots.
 
 
 ```{r}
@@ -97,7 +99,7 @@ on your findings regarding trying to predict `ModernC` from the other variables.
 
 ## Summary of Results
 
-10. For your final model, provide summaries of coefficients with 95% confidence intervals in a nice table with interpretations of each coefficient.  These should be in terms of the original units! 
+11. For your final model, provide summaries of coefficients with 95% confidence intervals in a nice table with interpretations of each coefficient.  These should be in terms of the original units! 
 
 
 ```{r}
@@ -105,7 +107,7 @@ on your findings regarding trying to predict `ModernC` from the other variables.
 ```
 
 
-11. Provide a paragraph summarizing your final model  and findings suitable for the US envoy to the UN after adjusting for outliers or influential points.   You should provide a justification for any case deletions in your final model
+12. Provide a paragraph summarizing your final model  and findings suitable for the US envoy to the UN after adjusting for outliers or influential points.   You should provide a justification for any case deletions in your final model
 
 
 ```{r}
@@ -115,44 +117,8 @@ on your findings regarding trying to predict `ModernC` from the other variables.
 
 ## Methodology
 
-12. We will use the United Nations data to verify properties of added-variable plots for the 'full' model 
-$$E[\log(\text{Fertility}) \mid \log(\text{PPgdp}) = x_1, \text{Purban} = x_2) = \beta_0 + \beta_1 x_1 + \beta_2 x_2$$
-There is nothing special about the two-predictor regression mean function but we are using it for simplicity. 
-
-    a) Regress $\log(\text{Fertility})$ on $\text{Purban}$ and obtain the residuals; call them `e_Y` for example. 
-```{r}
-
-```
-
-    b)  Regress $\log(\text{PPgdp})$ on $\text{Purban}$ and obtain the residuals; call them `e_X` for example. 
-```{r}
-
-```
-
-    c) Create an added-variable scatter plot with `e_Y` on the y-axis and `e_X` on the x-axis.   Compare to the output of `avPlots` using the full model.  Are they the same?    
-
-```{r}
-
-```
     
-    d) Prove that the intercept in the added variable scatter plot will always be zero.  _Hint:  use the fact that if $H$ is the project matrix which contains a column of ones, then $1_n^T (I - H) = 0$.  Use this to show that the sample mean of residuals will always be zero if there is an intercept._
+13. Prove that the intercept in the added variable scatter plot will always be zero.  _Hint:  use the fact that if $H$ is the project matrix which contains a column of ones, then $1_n^T (I - H) = 0$.  Use this to show that the sample mean of residuals will always be zero if there is an intercept._
 
-    e) Fit a regression of `e_Y` on `e_X` and show that the estimated coefficient for $\log(\text{PPgdp})$ is the same as the estimated slope in the $\log(\text{PPgdp})$ in the full model with both predictors.This correctly suggests that all the estimates in a multiple linear regressionmodel are adjusted for all the other terms in the mean function.
 
-```{r}
-
-```
-
-    f) show that the residuals in the added-variable plot are identical to the residuals from the mean function with both predictors.
-
-```{r}
-
-```
-
-    g) Show that the t-test for the coefficient for $\log(\text{PPgdp})$ is not quite the same from the added-variable plot and from the regression with both terms, and explain why they are slightly different. 
-
-```{r}
-
-```
-
-    h) Optional:  For multiple regression with more than 2 predictors, say a full model given by `Y ~ X1 + X2 + ... Xp`   we create the added variable plot for variable `j` by regressing `Y` on all of the `X`'s except `Xj` to form `e_Y` and then regressing `Xj` on all of the other X's to form `e_X`.  Confirm that the slope in the manually constructed added variable plot for one of the predictors  in Ex. 10 is the same as the estimate from your model. 
+14. For multiple regression with more than 2 predictors, say a full model given by `Y ~ X1 + X2 + ... Xp`   we create the added variable plot for variable `j` by regressing `Y` on all of the `X`'s except `Xj` to form `e_Y` and then regressing `Xj` on all of the other X's to form `e_X`.  Confirm that the slope in the manually constructed added variable plot for one of the predictors  in Ex. 10 is the same as the estimate from your model. 
