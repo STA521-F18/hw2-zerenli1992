@@ -3,8 +3,6 @@ title: "HW2 STA521 Fall18"
 author: '[Zeren Li, zl129 and zerenli1992]'
 date: "Due September 19, 2018"
 output:
-  html_document:
-    df_print: paged
   pdf_document: default
 ---
 
@@ -37,11 +35,11 @@ library(dplyr)
 ```
 
 
-1. Create a summary of the data.  How many variables have missing data?  Which are quantitative and which are qualtitative?
+1. Create a summary of the data.  How many variables have missing data?  Which are quantitative and which are qualitative?
 
 ModernC, Changem PPgdp, Frate, Pop,Fertility, Purban are quantitative.
 
-Six out of seven variable, including ModernC, Change,PPgdp,Frate,Pop,Fertility have missing data, the amount of missing is show in the table. 
+Six out of seven variable, including ModernC, Change, PPgdp, Frate, Pop, Fertility have missing data, the amount of missing is shown in the table. 
 ```{r}
 #summary
 summary(UN3)
@@ -79,14 +77,14 @@ rbind( mean, sd)  %>%
 
 
 3. Investigate the predictors graphically, using scatterplots or other tools of your choice. Create some plots highlighting the relationships among the predictors. Comment
-on your findings regarding trying to predict `ModernC` from the other variables.  Are there potential outliers, nonlinear relationships or transformations that appear to be needed based on your graphical EDA?
+on your findings regarding trying to predict `modern` from the other variables.  Are there potential outliers, nonlinear relationships or transformations that appear to be needed based on your graphical EDA?
 
-1. ModernC is correlated with PPgdp, Change, Fertility, and Purban over .5. The scatterplot also shows that ModernC has a negative correlation with Change and Fertility, a possible correlation with PPgdp and Purban.
+1. `ModernC` is correlated with `PPgdp`, `Change`, `Fertility`, and `Purban` over .5. The scatterplot also shows that `ModernC` has a negative correlation with Change and Fertility, a possible correlation with `PPgdp` and Purban.
 2. There are two obvious outliers in Pop, which with value over 1e+06.
-3. Pop, Fertility and PPgdp are very right skewed, which requires further transformation. 4. Frate and ModernC seems has a U-shape relationship.
+3. `Pop`, `Fertility` and `PPgdp` are very right-skewed, which requires further transformation. 4. Frate and `ModernC` has a U-shape relationship.
 
 
-```{r,warning=F}
+```{r, warning=FALSE}
 UN3 %>%
 ggpairs(.,title = "correlation table" )
 ```
@@ -95,15 +93,15 @@ ggpairs(.,title = "correlation table" )
 
 4.  Use the `lm()` function to perform a multiple linear regression with `ModernC` as the response and all other variables as the predictors, using the formula `ModernC ~ .`, where the `.` includes all remaining variables in the dataframe.  Create  diagnostic residual plot from the linear model object and comment on results regarding assumptions.  How many observations are used in your model fitting?
 
-1. Residuals vs Fitted plot shows a very weak non linear pattern and observation Azerbaijan and Cook.Islands drive this pattern. 
+1) Residuals vs Fitted plot shows a very weak non-linear pattern and observation Azerbaijan and Cook's Islands drive this pattern. 
 
-2. Normal Q−Q plot shows that the residuals are normally distributed, besides the disortion effect of two observations Azerbaijan and Cook.Islands.
+2) Normal QQ plot shows that the residuals are normally distributed, besides the distortion effect of two observations Azerbaijan and Cook.Islands.
 
-3. Scale-Location plot shows that residuals are spread equally along the ranges of predictors as the fitted line is flat. The results support the homoscedasticity assumption.
+3) ScaleLocation plot shows that residuals are spread equally along the ranges of predictors as the fitted line is flat. The results support the homoscedasticity assumption.
 
-4. Residuals vs Leverage plot shows that China, India Cook's Island are three most influenial cases, which may drive the regression result. 
+4) Residuals vs Leverage plot shows that China, India Cook's Island are the three most influential cases, which may drive the regression result. 
 
-5. 125 observation were used in the regression. 
+5) 125 observation were used in the regression. 
 ```{r}
 
 m1 <- lm(ModernC ~ ., data = UN3 ) 
@@ -117,12 +115,12 @@ plot(m1)
 
 5. Examine added variable plots `car::avPlot` or `car::avPlots`  for your model above. Are there any plots that suggest that transformations are needed for any of the terms in the model? Describe. Is it likely that any of the localities are influential for any of the terms?  Which localities?  Which terms?  
 
-1. The direction of correlation in added variables plot is consistent with that in the previous regression.
-2. Observation Kuwait drives the regression result between Change and ModernC.
-3. Observations China and India drive the regression result between Pop and ModernC.
-4. Norway and Switzerland drive the regression result between PPgdp and ModernC.
-4. Change has negative value, thus it requires transformation.
-5. PPgdp, Pop have outliers, thus they require logged transformation. 
+1) The direction of correlation in added variables plot is consistent with that in the previous regression.
+2) Observation Kuwait drives the regression result between Change and `ModernC`.
+3) Observations China and India drive the regression result between Pop and `ModernC`.
+4) Norway and Switzerland drive the regression result between PPgdp and `ModernC`.
+5) Change has a negative value, thus it requires transformation.
+6) `PPgdp` and `Pop` have outliers, thus they require logged transformation. 
 
 
 
@@ -130,11 +128,11 @@ plot(m1)
 avPlots(m1)
 ```
 
-6.  Using the Box-Tidwell  `car::boxTidwell` or graphical methods find appropriate transformations of the predictor variables to be used as predictors in the linear model.  If any predictors are negative, you may need to transform so that they are non-negative.  Describe your method and  the resulting transformations.
+6.  Using the Box-Tidwell  `car::boxTidwell` or graphical methods find appropriate transformations of the predictor variables to be used as predictors in the linear model.  If any predictors are negative, you may need to transform so that they are non-negative.  Describe your method and the resulting transformations.
 
-1. I transfer form the variable change by adding 1 and then minusing it by the minium of change. 
-2. As the distribution of Pop, PPgdp, Fertility are right-skewed, I use logged transformation on these variables.
-3. Using Box-Tidwell and the correlation scatterplot, I find a non-linear relationship between ModernC and l_pop. I use a quadratic transformation on this this variable.
+1) I transferform the variable `Change` by adding 1 and then minusing it by the minimum of change. 
+2) As the distribution of `Pop`, `PPgdp`,` Fertility` are right-skewed, I use logged transformation on these variables.
+3) Using Box-Tidwell and the correlation scatterplot, I find a non-linear relationship between `ModernC` and `l_pop`. I use a quadratic form of  `l_pop`.
 
 ```{r, warning=F}
 # transform the variable
@@ -153,9 +151,9 @@ boxTidwell(ModernC ~  l_pop  ,  ~ + change_nn + l_ppgdp + l_fertility + Purban +
 
 7. Given the selected transformations of the predictors, select a transformation of the response using `MASS::boxcox` or `car::boxCox` and justify.
 
-I use a quadratic form transformation of l_pop.
+1)I use a quadratic form transformation of l_pop.
 
-BoxCox plot shows that we don't need any transformation for our response variable and point estimate of $\lambda$ is around 1.
+2) BoxCox plot shows that we don't need any transformation for our response variable and the point estimate of $\lambda$ is around 1.
 
 ```{r}
 m2 <- lm(ModernC ~ poly( l_pop,2)  + change_nn + l_ppgdp + l_fertility + Purban + Frate, data= UN3_new %>% filter(is.na(l_pop) == F) )
@@ -164,7 +162,7 @@ boxCox(m2)
 
 8.  Fit the regression using the transformed variables.  Provide residual plots and added variables plots and comment.  If you feel that you need additional transformations of either the response or predictors, repeat any steps until you feel satisfied.
 
-First I fit m2 with a quadratic form of l_pop in the previous chunk. The quadratic form of l_pop is significant and its residual diagnositcs shows that the fitted model is less good than the m1, the original one. I use l_lop without polynomial transformation instead as m3. 
+First I fit m2 with a quadratic form of l_pop in the previous chunk. The quadratic form of l_pop is significant and its residual diagnostics shows that the fitted model is less good than the m1, the original one. I use l_lop without polynomial transformation instead as m3. 
 
 ```{r}
 # fit the model
@@ -201,13 +199,13 @@ plot(m4)
 
 10.  Are there any outliers or influential points in the data?  Explain.  If so, refit the model after removing any outliers and comment on residual plots.
 
-1. Yes, observation 45 is an outlier. 
+1) Yes, observation 45 is an outlier. 
 
-2. Residuals vs Fitted plot shows a very weak non linear pattern. 
+2) Residuals vs Fitted plot shows a very weak nonlinear pattern. 
 
-3. Normal Q−Q plot shows that the residuals are normally distributed.
+3) Normal QQ plot shows that the residuals are normally distributed.
 
-4. Scale-Location plot shows that residuals are spread equally along the ranges of predictors as the fitted line is flat. The results support the homoscedasticity assumption.
+4) ScaleLocation plot shows that residuals are spread equally along the ranges of predictors as the fitted line is flat. The results support the homoscedasticity assumption.
 
 5. Residuals vs Leverage plot shows that no observation has a cook's distance over .5.
 ```{r}
@@ -225,33 +223,75 @@ plot(m5)
 
 11. For your final model, provide summaries of coefficients with 95% confidence intervals in a nice table with interpretations of each coefficient.  These should be in terms of the original units! 
 
+The model shows that: 
+1) If population increases by 1 percent, we would expect `ModernC` would increase by 0.01920205 (1.92979*log(1.01)), holdings variables are constant. 
+2) If GDP per capita increases by 1 precent, we would expect `ModernC` would increase by 0.06332261 (6.36387*log(1.01)). 
+3) If live births per female increases by 1 percent, we would expect `ModernC` would decrease by -0.2160858 -21.71644*log(1.01). 
+3) If the percentage of females over age 15 economically active increases by 1 percent, we would expect `ModernC` would increase by 0.001896434(0.19059*log(1.01)).
+
 ```{r}
 library(xtable)
-xtable(m5)
+
+# point estimate
+point_est  <- xtable(m5) %>% select(Estimate) 
+
+# 95 ci
+ci <- xtable(confint(m5))
+
+# table
+cbind(point_est, ci) %>%
+  arrange() 
 ```
 
 
-12. Provide a paragraph summarizing your final model  and findings suitable for the US envoy to the UN after adjusting for outliers or influential points.  You should provide a justification for any case deletions in your final model
+12. Provide a paragraph summarizing your final model and findings suitable for the US envoy to the UN after adjusting for outliers or influential points.  You should provide a justification for any case deletions in your final model
 
-The final model shows that if population increases by 4.9 thousands (exp(1.5)), we would expect ModernC would increase by 1.5%. Moreover, if gdp per capita increases by 580 USD exp(6.36387), we would expect ModernC would increase by 1%. 
+
+No influential point or outlier is founded using Bonferroni Correction and Cook's Distance method. Overall, we find that there are more unmarried women in countries where has better economic growth, lower fertility rate, and larger female labor. Based on the regression result, we find that the fertility rate has the largest impact on unmarried women, however, the correlation makes sense that most women will have a baby after marriage. However, it's important to focus on the labor market and economic development if one wants to adopt some policy to adjust the proportion of unmarried women in the entire population.
+```{r}
+#Find influential point using Bonferroni Correction 
+abs.ti = abs(rstudent(m5))
+pval= 2*(1- pt(max(abs.ti), m5$df - 1))
+min(pval) < .05/nrow(UN3_new)
+sum(pval < .05/nrow(UN3_new))
+
+#Find outliers using Cook's Distance
+rownames(UN3_new)[cooks.distance(m5) > .5]
+```
+
 
 ## Methodology
 
     
 13. Prove that the intercept in the added variable scatter plot will always be zero.  _Hint:  use the fact that if $H$ is the project matrix which contains a column of ones, then $1_n^T (I - H) = 0$.  Use this to show that the sample mean of residuals will always be zero if there is an intercept._
-
-
+1) 
 $$
 \begin{aligned}
-
-H=X(X^TX)^{-1}X^T \\
-1_n^T(I-H)Y=0
-
+(I-H)Y &= \beta_0 + \beta_1 (I-H) X \\ 
+(I-H)Y &= \beta_0 + (X^TX)^{-1} X^T Y (I-H) X \\ 
+(I-H)Y &= \beta_0 +  (X_\beta^T(I-H) (I-H)X_\beta^T)^{-1} X^T_\beta  (I-H) Y (I-H) X_\beta\\ 
+X_\beta^T(I-H)Y &=  X_\beta^T 1 \beta_0 +  X_\beta^T ( X_\beta^T (I-H)  X_\beta)^{-1} X^T_\beta  (I-H) Y (I-H) X_\beta\\
+X_\beta^T(I-H)Y &= \sum^m_1 X_\beta^T 1 \beta_0 + X_\beta^T(I-H)Y\\
+\sum^m_1 X_\beta^T 1 \beta_0  &= 0 \\
+\beta_0 &= 0
 \end{aligned}
 $$
-
+2)  $e = \sum ^m_1 X_\beta^T 1 \beta_0= 0$
 14. For multiple regression with more than 2 predictors, say a full model given by `Y ~ X1 + X2 + ... Xp`   we create the added variable plot for variable `j` by regressing `Y` on all of the `X`'s except `Xj` to form `e_Y` and then regressing `Xj` on all of the other X's to form `e_X`.  Confirm that the slope in the manually constructed added variable plot for one of the predictors  in Ex. 10 is the same as the estimate from your model.
 
+Suppose l_pop is `Xj`. In m5, the point estimate of it is 1.930, which is the same as the result of added variable regression.
 
+```{r}
+# dependent variable of avplot
+e_Y =  lm( ModernC ~  change_nn + l_ppgdp + l_fertility + Purban + Frate, data= UN3_new %>% slice(-45) %>% na.exclude()  ) %>% residuals()
+
+
+# indepdent variable of avplot
+e_X = lm( l_pop ~  change_nn + l_ppgdp + l_fertility + Purban + Frate, data= UN3_new %>% slice(-45) %>% na.exclude() ) %>% residuals()
+
+avplot <- data.frame( e_Y , e_X)
+lm(e_Y ~  e_X, avplot ) %>%  summary()
+
+```
 
 
